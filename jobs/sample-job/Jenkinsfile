@@ -12,6 +12,7 @@ pipeline {
             steps{
                 echo "Stage 2 - command 1"
                 echo "Stage 2 - command 2"
+                sh 'python --version'
             }
         }
     }
