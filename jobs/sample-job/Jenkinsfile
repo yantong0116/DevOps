@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'linux-master' }
 
     stages {
         stage('Run Tests') {
@@ -19,10 +19,60 @@ pipeline {
                     def totalCycles = 10
                     def failCycles = testResults.count { it == 'failure' }
                     def passRate = (totalCycles - failCycles) * 100 / totalCycles
-
                     
-                            subject: 'Test Results',
-                            to: 'mayta51654944@gmail.com'
+                    emailext body: """
+                            <table>
+                              <caption>pass rate overview</caption>
+                              <thead>
+                                <tr>
+                                  <th></th>
+                                  <th scope="col">pt stability</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <th scope="row">test cycles</th>
+                                  <td>${totalCycles}</td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">fail cycles</th>
+                                  <td>${failCycles}</td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">pass rate</th>
+                                  <td>${passRate}%</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <table>
+                              <caption>pt stability</caption>
+                              <thead>
+                                <tr>
+                                  <th></th>
+                                  <th scope="col">cycle1</th>
+                                  <th scope="col">cycle2</th>
+                                  <th scope="col">cycle3</th>
+                                  <th scope="col">cycle4</th>
+                                  <th scope="col">cycle5</th>
+                                  <th scope="col">cycle6</th>
+                                  <th scope="col">cycle7</th>
+                                  <th scope="col">cycle8</th>
+                                  <th scope="col">cycle9</th>
+                                  <th scope="col">cycle10</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <th scope="row">test cycles</th>
+                                  ${testResults.findAll { it == 'success' }.size()} <td> x </td> ${testResults.findAll { it == 'failure' }.size()} <td> 🔴 </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            """,
+                    mimeType: 'text/html',
+                    from: 'mayta51654944@gmail.com'
+                    subject: 'Test Results',
+                    to: 'mayta51654944@gmail.com'
                 }
             }
         }
