@@ -8,71 +8,79 @@ pipeline {
                     def testResults = []
 
                     for (int i = 1; i <= 10; i++) {
-                        // 替換以下指令為你的測試指令
+                        // Replace the following command with your test command
                         def result = sh(script: "python --version", returnStatus: true)
                         
-                        // 將結果存入列表
+                        // Store the result in the list
                         testResults.add(result ? 'success' : 'failure')
                     }
 
-                    // 產生報告
+                    // Generate the report
                     def totalCycles = 10
                     def failCycles = testResults.count { it == 'failure' }
                     def passRate = (totalCycles - failCycles) * 100 / totalCycles
-                    
-                    emailext body: """
-                            <table>
-                              <caption>pass rate overview</caption>
-                              <thead>
-                                <tr>
-                                  <th></th>
-                                  <th scope="col">pt stability</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <th scope="row">test cycles</th>
-                                  <td>${totalCycles}</td>
-                                </tr>
-                                <tr>
-                                  <th scope="row">fail cycles</th>
-                                  <td>${failCycles}</td>
-                                </tr>
-                                <tr>
-                                  <th scope="row">pass rate</th>
-                                  <td>${passRate}%</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <table>
-                              <caption>pt stability</caption>
-                              <thead>
-                                <tr>
-                                  <th></th>
-                                  <th scope="col">cycle1</th>
-                                  <th scope="col">cycle2</th>
-                                  <th scope="col">cycle3</th>
-                                  <th scope="col">cycle4</th>
-                                  <th scope="col">cycle5</th>
-                                  <th scope="col">cycle6</th>
-                                  <th scope="col">cycle7</th>
-                                  <th scope="col">cycle8</th>
-                                  <th scope="col">cycle9</th>
-                                  <th scope="col">cycle10</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <th scope="row">test cycles</th>
-                                  ${testResults.findAll { it == 'success' }.size()} <td> x </td> ${testResults.findAll { it == 'failure' }.size()} <td> 🔴 </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            """,
-                    mimeType: 'text/html',
-                    from: 'mayta51654944@gmail.com',
-                    subject: 'Test Results',
-                    to: 'mayta51654944@gmail.com'
+
+                    // Generate the HTML body for the email
+                    def emailBody = """
+                        <table>
+                          <caption>Pass Rate Overview</caption>
+                          <thead>
+                            <tr>
+                              <th></th>
+                              <th scope="col">PT Stability</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <th scope="row">Test Cycles</th>
+                              <td>${totalCycles}</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">Fail Cycles</th>
+                              <td>${failCycles}</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">Pass Rate</th>
+                              <td>${passRate}%</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table>
+                          <caption>PT Stability</caption>
+                          <thead>
+                            <tr>
+                              <th></th>
+                              <th scope="col">Cycle1</th>
+                              <th scope="col">Cycle2</th>
+                              <th scope="col">Cycle3</th>
+                              <th scope="col">Cycle4</th>
+                              <th scope="col">Cycle5</th>
+                              <th scope="col">Cycle6</th>
+                              <th scope="col">Cycle7</th>
+                              <th scope="col">Cycle8</th>
+                              <th scope="col">Cycle9</th>
+                              <th scope="col">Cycle10</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <th scope="row">Test Cycles</th>
+                              ${testResults.collect { result -> "<td>${result == 'success' ? '🔵' : '🔴'}</td>" }.join()}
+                            </tr>
+                            <tr>
+                              <th scope="row">Results</th>
+                              ${testResults.collectIndexed { i, result -> "<td>${i == 8 && result == 'failure' ? 'x' : result == 'success' ? '🔵' : '🔴'}</td>" }.join()}
+                            </tr>
+                          </tbody>
+                        </table>
+                    """
+
+                    // Send the email
+                    emailext body: emailBody,
+                        mimeType: 'text/html',
+                        from: 'mayta51654944@gmail.com',
+                        subject: 'Test Results',
+                        to: 'mayta51654944@gmail.com'
                 }
             }
         }
