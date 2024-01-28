@@ -82,7 +82,7 @@ pipeline {
                             to: 'mayta51654944@gmail.com'
 
                         // Trigger the pipeline again
-                        build job: 'YourPipelineJobName'
+                        build job: 'sample-job'
                     } else {
                         echo "Maximum recursive count reached. Stopping recursion."
                     }
