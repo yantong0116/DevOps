@@ -2,8 +2,7 @@ pipeline {
     agent { label 'linux-master' }
 
     environment {
-        RECURSIVE_COUNT = '0'
-        MAX_RECURSIVE_COUNT = '2'
+        MAX_RECURSIVE_COUNT = '5'
     }
 
     stages {
@@ -11,10 +10,11 @@ pipeline {
             steps {
                 script {
                     // Check if the current recursive count is less than the maximum allowed
-                    if (env.RECURSIVE_COUNT.toInteger() < env.MAX_RECURSIVE_COUNT.toInteger()) {
+                    def recursiveCount = env.RECURSIVE_COUNT ?: 0
+                    if (recursiveCount.toInteger() < env.MAX_RECURSIVE_COUNT.toInteger()) {
                         // Increment the recursive count
-                        println(env.RECURSIVE_COUNT.toInteger())
-                        env.RECURSIVE_COUNT = (env.RECURSIVE_COUNT.toInteger() + 1).toString()
+                        recursiveCount += 1
+                        env.RECURSIVE_COUNT = recursiveCount.toString()
 
                         def testResults = ['failure', 'failure', 'failure', 'success', 'success', 'success', 'failure', 'failure', 'success', 'success']
                         println(testResults)
@@ -82,8 +82,15 @@ pipeline {
                             subject: 'Test Results',
                             to: 'mayta51654944@gmail.com'
 
-                        // Trigger the pipeline again
-                        build job: currentBuild.fullProjectName
+                        // Check the result of the current build
+                        def currentBuildResult = currentBuild.result
+
+                        // Trigger the pipeline again only if the current build was successful
+                        if (currentBuildResult == 'SUCCESS') {
+                            build job: currentBuild.fullProjectName
+                        } else {
+                            echo "Current build result is not SUCCESS. Stopping recursion."
+                        }
                     } else {
                         echo "Maximum recursive count reached. Stopping recursion."
                     }
