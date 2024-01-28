@@ -67,7 +67,7 @@ pipeline {
                           <tbody>
                             <tr>
                                 <th scope="row">Test Cycles</th>
-                                ${(0..9).collect { index -> "<td>${testResults[index] == 'success' ? '🔵' : '🔴'}</td>" }.join()}
+                                ${testResults.empty ? '' : (0..9).collect { index -> "<td>${testResults[index] == 'success' ? '🔵' : '🔴'}</td>" }.join()}
                             </tr>
                           </tbody>
                         </table>
