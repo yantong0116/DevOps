@@ -1,5 +1,3 @@
-def testResults = []
-
 pipeline {
     agent any
 
@@ -7,79 +5,35 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
+                    def testResults = []
+
                     for (int i = 1; i <= 10; i++) {
                         // 替換以下指令為你的測試指令
-                        def result = sh(script: "python --version", returnStatus: true)
+                        def result = sh(script: "your_test_command", returnStatus: true)
                         
                         // 將結果存入列表
                         testResults.add(result ? 'success' : 'failure')
                     }
-                }
-            }
-        }
-    }
 
-    post {
-        always {
-            // 產生報告
-            def totalCycles = 10
-            def failCycles = testResults.count { it == 'failure' }
-            def passRate = (totalCycles - failCycles) * 100 / totalCycles
+                    // 產生報告
+                    def totalCycles = 10
+                    def failCycles = testResults.count { it == 'failure' }
+                    def passRate = (totalCycles - failCycles) * 100 / totalCycles
 
-            emailext attachLog: true,
-                    body: """
-                    <table>
-                      <caption>pass rate overview</caption>
-                      <thead>
-                        <tr>
-                          <th></th>
-                          <th scope="col">pt stability</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <th scope="row">test cycles</th>
-                          <td>${totalCycles}</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">fail cycles</th>
-                          <td>${failCycles}</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">pass rate</th>
-                          <td>${passRate}%</td>
-                        </tr>
-                      </tbody>
-                    </table>
-
-                    <table>
-                      <caption>pt stability</caption>
-                      <thead>
-                        <tr>
-                          <th></th>
-                          <th scope="col">cycle1</th>
-                          <th scope="col">cycle2</th>
-                          <th scope="col">cycle3</th>
-                          <th scope="col">cycle4</th>
-                          <th scope="col">cycle5</th>
-                          <th scope="col">cycle6</th>
-                          <th scope="col">cycle7</th>
-                          <th scope="col">cycle8</th>
-                          <th scope="col">cycle9</th>
-                          <th scope="col">cycle10</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <th scope="row">test cycles</th>
-                          ${testResults.collect { result -> "<td>${result == 'success' ? '🟢' : '🔴'}</td>" }.join()}
-                        </tr>
-                      </tbody>
-                    </table>
-                    """,
-                    mimeType: 'text/html',
-                    subject: 'Test Results',
-                    to: 'mayta51654944@gmail.com'
-        }
-    }
-}
+                    emailext attachLog: true,
+                            body: """
+                            <table>
+                              <caption>pass rate overview</caption>
+                              <thead>
+                                <tr>
+                                  <th></th>
+                                  <th scope="col">pt stability</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <th scope="row">test cycles</th>
+                                  <td>${totalCycles}</td>
+                                </tr>
+                                <tr>
+                                  <th scope
