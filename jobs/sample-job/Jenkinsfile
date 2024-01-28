@@ -73,6 +73,7 @@ pipeline {
                             """,
                             mimeType: 'text/html',
                             subject: 'Test Results',
+                            from: 'mayta51654944@gmail.com',
                             to: 'mayta51654944@gmail.com'
                 }
             }
