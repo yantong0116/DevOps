@@ -15,5 +15,18 @@ pipeline {
                 sh 'python --version'
             }
         }
+        stage('Publish') {
+            echo 'Publish Allure report'
+            publishHTML(
+                    target: [
+                            allowMissing         : false,
+                            alwaysLinkToLastBuild: false,
+                            keepAll              : true,
+                            reportDir            : '/home/yantong/Desktop/yantong/allure-report/',
+                            reportFiles          : 'index.html',
+                            reportName           : "Allure Report"
+                    ]
+            )
+        }
     }
 }
