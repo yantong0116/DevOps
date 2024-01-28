@@ -9,7 +9,7 @@ pipeline {
 
                     for (int i = 1; i <= 10; i++) {
                         // 替換以下指令為你的測試指令
-                        def result = sh(script: "your_test_command", returnStatus: true)
+                        def result = sh(script: "python --version", returnStatus: true)
                         
                         // 將結果存入列表
                         testResults.add(result ? 'success' : 'failure')
