@@ -25,19 +25,16 @@ pipeline {
             }
         }
 
-        stage('Publish Allure Report') {
-            steps {
-                script {
-                    publishHTML([
-                        allowMissing: false,
-                        alwaysLinkToLastBuild: false,
-                        keepAll: true,
-                        reportDir: '/home/yantong/Desktop/yantong/allure-report',
-                        reportFiles: 'index.html',
-                        reportName: 'Allure Report'
-                    ])
-                }
-            }
+        
+    }
+    post {
+        node ('linux-master'){
+            junit keepLongStdio: true, testResults: '/home/yantong/Desktop/yantong/allure-report'
+            publishHTML target: [
+                reportDir: '/home/yantong/Desktop/yantong/allure-report',
+                reportFiles: 'index.html',
+                reportName: 'Report - Unit Test'
+            ]
         }
     }
 }
