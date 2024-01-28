@@ -84,13 +84,7 @@ pipeline {
 
                         // Check the result of the current build
                         def currentBuildResult = currentBuild.result
-
-                        // Trigger the pipeline again only if the current build was successful
-                        if (currentBuildResult == 'SUCCESS') {
-                            build job: currentBuild.fullProjectName
-                        } else {
-                            echo "Current build result is not SUCCESS. Stopping recursion."
-                        }
+                        build job: currentBuild.fullProjectName
                     } else {
                         echo "Maximum recursive count reached. Stopping recursion."
                     }
