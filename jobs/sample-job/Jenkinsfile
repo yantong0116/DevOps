@@ -15,19 +15,28 @@ pipeline {
                 sh 'python --version'
             }
         }
-        stage('Publish') {
-            steps{
-                echo 'Publish Allure report'
-                publishHTML(
-                        target: [
-                                allowMissing         : false,
-                                alwaysLinkToLastBuild: false,
-                                keepAll              : true,
-                                reportDir            : '/home/yantong/Desktop/yantong/allure-report/',
-                                reportFiles          : 'index.html',
-                                reportName           : "Allure Report"
-                        ]
-                )
+
+        stage('Test') {
+            steps {
+                // Run your tests and generate Allure report
+                script {
+                    sh 'allure generate /home/yantong/Desktop/yantong/allure-results --clean -o /home/yantong/Desktop/yantong/allure-report'
+                }
+            }
+        }
+
+        stage('Publish Allure Report') {
+            steps {
+                script {
+                    publishHTML([
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: false,
+                        keepAll: true,
+                        reportDir: '/home/yantong/Desktop/yantong/allure-report',
+                        reportFiles: 'index.html',
+                        reportName: 'Allure Report'
+                    ])
+                }
             }
         }
     }
