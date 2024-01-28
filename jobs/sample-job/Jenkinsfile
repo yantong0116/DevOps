@@ -47,27 +47,27 @@ pipeline {
                             </tr>
                           </tbody>
                         </table>
-                        <table>
+                        <table style='text-align: center;'>
                           <caption>PT Stability</caption>
                           <thead>
                             <tr>
                               <th></th>
-                              <th scope="col">Cycle1</th>
-                              <th scope="col">Cycle2</th>
-                              <th scope="col">Cycle3</th>
-                              <th scope="col">Cycle4</th>
-                              <th scope="col">Cycle5</th>
-                              <th scope="col">Cycle6</th>
-                              <th scope="col">Cycle7</th>
-                              <th scope="col">Cycle8</th>
-                              <th scope="col">Cycle9</th>
-                              <th scope="col">Cycle10</th>
+                              <th scope="col"> Cycle1 </th>
+                              <th scope="col"> Cycle2 </th>
+                              <th scope="col"> Cycle3 </th>
+                              <th scope="col"> Cycle4 </th>
+                              <th scope="col"> Cycle5 </th>
+                              <th scope="col"> Cycle6 </th>
+                              <th scope="col"> Cycle7 </th>
+                              <th scope="col"> Cycle8 </th>
+                              <th scope="col"> Cycle9 </th>
+                              <th scope="col"> Cycle10 </th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr>
                                 <th scope="row">Test Cycles</th>
-                                ${testResults.collect { result -> "<td>${result == 'success' ? '🔵' : '🔴'}</td>" }.join('')}
+                                ${testResults.collect { result -> "<td style='text-align: center;'>${result == 'success' ? '🔵' : '🔴'}</td>" }.join('')}
                             </tr>
                           </tbody>
                         </table>
