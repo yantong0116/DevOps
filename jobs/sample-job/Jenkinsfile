@@ -20,8 +20,8 @@ pipeline {
             steps {
                 // Run sample tests and generate Allure report
                 script {
-                    echo 'Test output 1' > /home/yantong/Desktop/yantong/allure-results/test-results-1.xml
-                    echo 'Test output 2' > /home/yantong/Desktop/yantong/allure-results/test-results-2.xml
+                    echo 'Test output 1' > "/home/yantong/Desktop/yantong/allure-results/test-results-1.xml"
+                    echo 'Test output 2' > "/home/yantong/Desktop/yantong/allure-results/test-results-2.xml"
                     sh 'allure generate /home/yantong/Desktop/yantong/allure-results --clean -o /home/yantong/Desktop/yantong/allure-report'
                 }
             }
