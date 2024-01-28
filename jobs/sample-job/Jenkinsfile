@@ -1,15 +1,15 @@
 pipeline {
     agent { label 'linux-master' }
     stages {
-        stage ("Stage 1") {
-            steps{
+        stage("Stage 1") {
+            steps {
                 echo "Stage 1 - command 1"
                 echo "Stage 1 - command 2"
                 echo "Stage 1 - command 3"
             }
         }
-        stage ("Stage 2") {
-            steps{
+        stage("Stage 2") {
+            steps {
                 echo "Stage 2 - command 1"
                 echo "Stage 2 - command 2"
                 sh 'python --version'
@@ -18,19 +18,19 @@ pipeline {
 
         stage('Test') {
             steps {
-                // Run your tests and generate Allure report
+                // Run sample tests and generate Allure report
                 script {
+                    echo 'Test output 1' > /home/yantong/Desktop/yantong/allure-results/test-results-1.xml
+                    echo 'Test output 2' > /home/yantong/Desktop/yantong/allure-results/test-results-2.xml
                     sh 'allure generate /home/yantong/Desktop/yantong/allure-results --clean -o /home/yantong/Desktop/yantong/allure-report'
                 }
             }
         }
-
-        
     }
     post {
-        always{
-            node ('linux-master'){
-                junit keepLongStdio: true, testResults: '/home/yantong/Desktop/yantong/allure-report/*.xml'
+        always {
+            node('linux-master') {
+                junit keepLongStdio: true, testResults: '/home/yantong/Desktop/yantong/allure-results/*.xml'
                 publishHTML target: [
                     reportDir: '/home/yantong/Desktop/yantong/allure-report',
                     reportFiles: 'index.html',
