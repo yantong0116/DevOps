@@ -66,7 +66,7 @@ pipeline {
                               <tbody>
                                 <tr>
                                   <th scope="row">test cycles</th>
-                                  ${testResults.collect { result -> "<td>${result == 'success' ? '🟢' : '🔴'}</td>" }.join()}
+                                  ${testResults.findAll { it == 'success' }.size()} <td> x </td> ${testResults.findAll { it == 'failure' }.size()} <td> 🔴 </td>
                                 </tr>
                               </tbody>
                             </table>
