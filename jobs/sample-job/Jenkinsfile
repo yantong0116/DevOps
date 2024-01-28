@@ -13,6 +13,7 @@ pipeline {
                     // Check if the current recursive count is less than the maximum allowed
                     if (env.RECURSIVE_COUNT.toInteger() < env.MAX_RECURSIVE_COUNT.toInteger()) {
                         // Increment the recursive count
+                        println(env.RECURSIVE_COUNT.toInteger())
                         env.RECURSIVE_COUNT = (env.RECURSIVE_COUNT.toInteger() + 1).toString()
 
                         def testResults = ['failure', 'failure', 'failure', 'success', 'success', 'success', 'failure', 'failure', 'success', 'success']
@@ -82,7 +83,7 @@ pipeline {
                             to: 'mayta51654944@gmail.com'
 
                         // Trigger the pipeline again
-                        build job: 'sample-job'
+                        build job: currentBuild.fullProjectName
                     } else {
                         echo "Maximum recursive count reached. Stopping recursion."
                     }
