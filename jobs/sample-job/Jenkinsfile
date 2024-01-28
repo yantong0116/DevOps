@@ -64,12 +64,12 @@ pipeline {
                           </thead>
                           <tbody>
                             <tr>
-                              <th scope="row">Test Cycles</th>
-                              ${testResults.collect { result -> "<td>${result == 'success' ? '🔵' : '🔴'}</td>" }.join()}
+                                <th scope="row">Test Cycles</th>
+                                ${testResults.empty ? '' : testResults.collect { result -> "<td>${result == 'success' ? '🔵' : '🔴'}</td>" }.join()}
                             </tr>
                             <tr>
-                              <th scope="row">Results</th>
-                              ${testResults.collectIndexed { i, result -> "<td>${i == 8 && result == 'failure' ? 'x' : result == 'success' ? '🔵' : '🔴'}</td>" }.join()}
+                                <th scope="row">Results</th>
+                                ${testResults.empty ? '' : testResults.collectIndexed { i, result -> "<td>${i == 8 && result == 'failure' ? 'x' : result == 'success' ? '🔵' : '🔴'}</td>" }.join()}
                             </tr>
                           </tbody>
                         </table>
