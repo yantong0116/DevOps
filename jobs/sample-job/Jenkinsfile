@@ -5,15 +5,15 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    def testResults = []
+                    def testResults = [failure, failure, failure, success, success, success, failure, failure, success, success]
 
-                    for (int i = 1; i <= 10; i++) {
-                        // Replace the following command with your test command
-                        def result = sh(script: "python --version", returnStatus: true)
+                    // for (int i = 1; i <= 10; i++) {
+                    //     // Replace the following command with your test command
+                    //     def result = sh(script: "python --version", returnStatus: true)
                         
-                        // Store the result in the list
-                        testResults.add(result ? 'success' : 'failure')
-                    }
+                    //     // Store the result in the list
+                    //     testResults.add(result ? 'success' : 'failure')
+                    // }
 
                     println(testResults)
 
